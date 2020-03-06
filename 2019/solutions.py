@@ -154,3 +154,30 @@ def day3_2(paths):
             if dist < min_dist:
                 min_dist = dist
     return min_dist
+
+from collections import Counter
+
+def day4_1(n1, n2):
+    ctr = 0
+    for n in range(n1, n2+1):
+        s = str(n)
+        if list(s) != sorted(s):
+            continue
+        c = Counter(s)
+        if c.most_common()[0][1] == 1:
+            continue
+        ctr += 1
+    return ctr
+
+def day4_2(n1, n2):
+    ctr = 0
+    for n in range(n1, n2+1):
+        s = str(n)
+        if list(s) != sorted(s):
+            continue
+        c = Counter(s)
+        ct = set(c.values())
+        if 2 not in ct:
+            continue
+        ctr += 1
+    return ctr
