@@ -181,3 +181,41 @@ def day4_2(n1, n2):
             continue
         ctr += 1
     return ctr
+
+def day5_1(program):
+    op_params = [0, 3, 3, 1, 1, 2, 2, 3, 3]
+    ptr = 0
+    while True:
+        inst = str(program[ptr])
+        opcode = int(inst[-2:])
+        if opcode == 99:
+            return 'done'
+        n_params = op_params[opcode]
+        write_addr = program[ptr+n_params]
+        param_mode = inst[:-2].rjust(n_params,'0')
+        param_vals = [param if int(mode) else program[param]
+                        for mode,param 
+                        in zip(reversed(param_mode),
+                               program[ptr+1:ptr+1+n_params])]
+        if opcode == 1:
+            program[write_addr] = param_vals[0] + param_vals[1]
+        elif opcode == 2:
+            program[write_addr] = param_vals[0] * param_vals[1]
+        elif opcode == 3:
+            program[write_addr] = int(input('input: '))
+        elif opcode == 4:
+            out = param_vals[0]
+            print(f"{out} at instruction {ptr}")
+        elif opcode == 5:
+            if param_vals[0]:
+                ptr = param_vals[1]
+                continue
+        elif opcode == 6:
+            if not param_vals[0]:
+                ptr = param_vals[1]
+                continue
+        elif opcode == 7:
+            program[write_addr] = int(param_vals[0] < param_vals[1])
+        elif opcode == 8:
+            program[write_addr] = int(param_vals[0] == param_vals[1])
+        ptr += n_params+1
